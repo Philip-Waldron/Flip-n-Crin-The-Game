@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private bool _triggerPressedLeft;
 
     public float BoostStrength;
+    public float ManeuverBoostPower;
 
     private void Start()
     {
@@ -39,6 +40,11 @@ public class PlayerController : MonoBehaviour
     void HandleRightTriggerClicked(object sender, ClickedEventArgs e)
     {
         _triggerPressedRight = true;
+        
+        if (!RopeRight.Stick)
+        {
+            Player.GetComponent<Rigidbody>().AddForce(-RopeRight.RopeStart.forward.normalized * ManeuverBoostPower);
+        }
     }
     
     void HandleRightUnclicked(object sender, ClickedEventArgs e)
@@ -49,6 +55,11 @@ public class PlayerController : MonoBehaviour
     void HandleLeftTriggerClicked(object sender, ClickedEventArgs e)
     {
         _triggerPressedLeft = true;
+
+        if (!RopeLeft.Stick)
+        {
+            Player.GetComponent<Rigidbody>().AddForce(-RopeLeft.RopeStart.forward.normalized * ManeuverBoostPower);
+        }
     }
     
     void HandleLeftUnclicked(object sender, ClickedEventArgs e)

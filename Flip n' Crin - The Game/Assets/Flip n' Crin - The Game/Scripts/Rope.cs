@@ -10,6 +10,7 @@ namespace Scripts
 		
 		public Transform RopeStart;
 		private RaycastHit _hit; // RopeEnd
+		private RaycastHit _hitAdjust; // the updated RopEnd
 		public Vector3 RopeDirection;
 		public float MaxDistance = 10;
 
@@ -20,8 +21,8 @@ namespace Scripts
 		private void Start()
 		{
 			_lr = gameObject.AddComponent<LineRenderer>();
-			_lr.endWidth = 0.035f;
-			_lr.startWidth = 0.035f;
+			_lr.endWidth = 0.015f;
+			_lr.startWidth = 0.015f;
 			_lr.material = RopeMaterial;
 			_lr.textureMode = LineTextureMode.Tile;
 			
@@ -43,13 +44,21 @@ namespace Scripts
 
 			if (Stick)
 			{
-				//_ropePos += (_endRopePose - RopeStart.position).normalized * 1 * Time.deltaTime;
-				//var ropeEnd = RopeStart.position;
-				//_ropePos += Vector3.Lerp(RopeStart.position, _hitPoint.point, Time.deltaTime * .1f);
-				//_lr.SetPosition(1, _ropePos);
+				/*_ropePos += (_endRopePose - RopeStart.position).normalized * 1 * Time.deltaTime;
+				var ropeEnd = RopeStart.position;
+				_ropePos += Vector3.Lerp(RopeStart.position, _hitPoint.point, Time.deltaTime * .1f);
+				_lr.SetPosition(1, _ropePos);*/
+				
 				RopeDirection = (_ropeHitPoint - RopeStart.position).normalized;
 				_lr.material = RopeMaterial;
 				
+				Physics.Raycast(RopeStart.position, RopeDirection, out _hitAdjust, MaxDistance);
+				
+				if (_hitAdjust.collider && _hitAdjust.collider != _hit.collider && !_hitAdjust.collider.CompareTag("NotCatchableSurface"))
+				{
+					_lr.SetPosition(1, _hitAdjust.point);
+					_ropeHitPoint = _hitAdjust.point;
+				}
 			}
 		}
 		
