@@ -71,6 +71,7 @@ ExportedObj/
 sysinfo.txt
 
 # Rider
-.idea/*
+*.idea
+*.idea/*
 BuildIL2CPP/
 Build2/
