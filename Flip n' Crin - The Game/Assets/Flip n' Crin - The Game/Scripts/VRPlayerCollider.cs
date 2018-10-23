@@ -7,9 +7,13 @@ namespace Scripts
         public Transform CameraEye;
         private CapsuleCollider _collider;
         
-        private void Update()
+        private void Start()
         {
             _collider = GetComponent<CapsuleCollider>();
+        }
+        
+        private void Update()
+        {
             _collider.height = CameraEye.localPosition.y + 0.2f;
             _collider.center = new Vector3(CameraEye.localPosition.x, 0.1f + CameraEye.localPosition.y/2, CameraEye.localPosition.z);
         }

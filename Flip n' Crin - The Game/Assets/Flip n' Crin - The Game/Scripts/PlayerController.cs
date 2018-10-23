@@ -7,6 +7,7 @@ namespace Scripts
         public SteamVR_TrackedController ControllerRight;
         public SteamVR_TrackedController ControllerLeft;
         public Transform Player;
+        private Rigidbody _playerRigidbody;
         public RopeController RopeRight;
         public RopeController RopeLeft;
 
@@ -22,17 +23,19 @@ namespace Scripts
             ControllerRight.TriggerUnclicked += HandleRightUnclicked;
             ControllerLeft.TriggerClicked += HandleLeftTriggerClicked;
             ControllerLeft.TriggerUnclicked += HandleLeftUnclicked;
+
+            _playerRigidbody = Player.GetComponent<Rigidbody>();
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (RopeRight.StuckToSurface && _triggerPressedRight)
             {
-                Player.GetComponent<Rigidbody>().AddForce(RopeRight.RopeDirection * BoostStrength);
+                _playerRigidbody.AddForce(RopeRight.RopeDirection * BoostStrength);
             }
             if (RopeLeft.StuckToSurface && _triggerPressedLeft)
             {
-                Player.GetComponent<Rigidbody>().AddForce(RopeLeft.RopeDirection * BoostStrength);
+                _playerRigidbody.AddForce(RopeLeft.RopeDirection * BoostStrength);
             }
         }
 
@@ -42,7 +45,7 @@ namespace Scripts
         
             if (!RopeRight.StuckToSurface)
             {
-                Player.GetComponent<Rigidbody>().AddForce(-RopeRight.RopeStart.forward.normalized * ManeuverBoostPower);
+                _playerRigidbody.AddForce(-RopeRight.RopeStart.forward.normalized * ManeuverBoostPower);
             }
         }
     
@@ -57,7 +60,7 @@ namespace Scripts
 
             if (!RopeLeft.StuckToSurface)
             {
-                Player.GetComponent<Rigidbody>().AddForce(-RopeLeft.RopeStart.forward.normalized * ManeuverBoostPower);
+                _playerRigidbody.AddForce(-RopeLeft.RopeStart.forward.normalized * ManeuverBoostPower);
             }
         }
     

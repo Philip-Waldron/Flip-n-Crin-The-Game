@@ -98,6 +98,7 @@ namespace Scripts
 				_cj.linearLimit = new SoftJointLimit()
 				{
 					limit = _currentMaxRopeLength,
+					bounciness = 0.3f
 					
 				};
 				_cj.xMotion = ConfigurableJointMotion.Limited;
