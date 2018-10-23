@@ -59,9 +59,8 @@
   <ItemGroup>
     <Compile Include="Assets\Flip n' Crin - The Game\Scripts\FollowObject.cs" />
     <Compile Include="Assets\Flip n' Crin - The Game\Scripts\PlayerController.cs" />
-    <Compile Include="Assets\Flip n' Crin - The Game\Scripts\Rope.cs" />
     <Compile Include="Assets\Flip n' Crin - The Game\Scripts\RopeController.cs" />
-    <Compile Include="Assets\Flip n' Crin - The Game\Scripts\RopeSections.cs" />
+    <Compile Include="Assets\Flip n' Crin - The Game\Scripts\VRPlayerCollider.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_GazeTracker.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_LaserPointer.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_Teleporter.cs" />

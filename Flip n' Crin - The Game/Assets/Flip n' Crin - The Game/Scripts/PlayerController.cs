@@ -1,69 +1,69 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Scripts;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+namespace Scripts
 {
-    public SteamVR_TrackedController ControllerRight;
-    public SteamVR_TrackedController ControllerLeft;
-    public Transform Player;
-    public Rope RopeRight;
-    public Rope RopeLeft;
-
-    private bool _triggerPressedRight;
-    private bool _triggerPressedLeft;
-
-    public float BoostStrength;
-    public float ManeuverBoostPower;
-
-    private void Start()
+    public class PlayerController : MonoBehaviour
     {
-        ControllerRight.TriggerClicked += HandleRightTriggerClicked;
-        ControllerRight.TriggerUnclicked += HandleRightUnclicked;
-        ControllerLeft.TriggerClicked += HandleLeftTriggerClicked;
-        ControllerLeft.TriggerUnclicked += HandleLeftUnclicked;
-    }
+        public SteamVR_TrackedController ControllerRight;
+        public SteamVR_TrackedController ControllerLeft;
+        public Transform Player;
+        public RopeController RopeRight;
+        public RopeController RopeLeft;
 
-    private void Update()
-    {
-        if (RopeRight.Stick && _triggerPressedRight)
+        private bool _triggerPressedRight;
+        private bool _triggerPressedLeft;
+
+        public float BoostStrength;
+        public float ManeuverBoostPower;
+
+        private void Start()
         {
-            Player.GetComponent<Rigidbody>().AddForce(RopeRight.RopeDirection * BoostStrength);
+            ControllerRight.TriggerClicked += HandleRightTriggerClicked;
+            ControllerRight.TriggerUnclicked += HandleRightUnclicked;
+            ControllerLeft.TriggerClicked += HandleLeftTriggerClicked;
+            ControllerLeft.TriggerUnclicked += HandleLeftUnclicked;
         }
-        if (RopeLeft.Stick && _triggerPressedLeft)
-        {
-            Player.GetComponent<Rigidbody>().AddForce(RopeLeft.RopeDirection * BoostStrength);
-        }
-    }
 
-    void HandleRightTriggerClicked(object sender, ClickedEventArgs e)
-    {
-        _triggerPressedRight = true;
+        private void Update()
+        {
+            if (RopeRight.StuckToSurface && _triggerPressedRight)
+            {
+                Player.GetComponent<Rigidbody>().AddForce(RopeRight.RopeDirection * BoostStrength);
+            }
+            if (RopeLeft.StuckToSurface && _triggerPressedLeft)
+            {
+                Player.GetComponent<Rigidbody>().AddForce(RopeLeft.RopeDirection * BoostStrength);
+            }
+        }
+
+        void HandleRightTriggerClicked(object sender, ClickedEventArgs e)
+        {
+            _triggerPressedRight = true;
         
-        if (!RopeRight.Stick)
-        {
-            Player.GetComponent<Rigidbody>().AddForce(-RopeRight.RopeStart.forward.normalized * ManeuverBoostPower);
+            if (!RopeRight.StuckToSurface)
+            {
+                Player.GetComponent<Rigidbody>().AddForce(-RopeRight.RopeStart.forward.normalized * ManeuverBoostPower);
+            }
         }
-    }
     
-    void HandleRightUnclicked(object sender, ClickedEventArgs e)
-    {
-        _triggerPressedRight = false;
-    }
-
-    void HandleLeftTriggerClicked(object sender, ClickedEventArgs e)
-    {
-        _triggerPressedLeft = true;
-
-        if (!RopeLeft.Stick)
+        void HandleRightUnclicked(object sender, ClickedEventArgs e)
         {
-            Player.GetComponent<Rigidbody>().AddForce(-RopeLeft.RopeStart.forward.normalized * ManeuverBoostPower);
+            _triggerPressedRight = false;
         }
-    }
+
+        void HandleLeftTriggerClicked(object sender, ClickedEventArgs e)
+        {
+            _triggerPressedLeft = true;
+
+            if (!RopeLeft.StuckToSurface)
+            {
+                Player.GetComponent<Rigidbody>().AddForce(-RopeLeft.RopeStart.forward.normalized * ManeuverBoostPower);
+            }
+        }
     
-    void HandleLeftUnclicked(object sender, ClickedEventArgs e)
-    {
-        _triggerPressedLeft = false;
+        void HandleLeftUnclicked(object sender, ClickedEventArgs e)
+        {
+            _triggerPressedLeft = false;
+        }
     }
 }
